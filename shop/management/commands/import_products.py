@@ -1,4 +1,5 @@
-import re
+import shutil
+import subprocess
 from pathlib import Path
 
 from django.conf import settings
@@ -29,6 +30,7 @@ PRODUCT_SOURCES = {
         'category': 'Ages 4-8',
         'price': 299,
         'is_featured': False,
+        'video': 'VID_20260707_214930_347_bsl.mp4',
     },
     'Littlescribbles tracing book': {
         'name': 'Tracing Book',
@@ -76,6 +78,7 @@ PRODUCT_SOURCES = {
 
 IMAGE_EXTENSIONS = {'.jpg', '.jpeg', '.png'}
 MAX_DIMENSION = 1200
+MAX_VIDEO_WIDTH = 720
 DEFAULT_STOCK = 15
 
 
@@ -136,6 +139,12 @@ class Command(BaseCommand):
                 )
                 images_imported += 1
 
+            video_filename = info.get('video')
+            if video_filename:
+                if self._transcode_video(source_dir / video_filename, dest_dir / 'video.mp4'):
+                    product.video = f'products/{slug}/video.mp4'
+                    product.save()
+
         self.stdout.write(self.style.SUCCESS(
             f'Imported {products_created} new products and {images_imported} images.'
         ))
@@ -151,3 +160,26 @@ class Command(BaseCommand):
             elif img.mode != 'RGB':
                 img = img.convert('RGB')
             img.save(dest_path, format='JPEG', quality=82, optimize=True)
+
+    def _transcode_video(self, source_path: Path, dest_path: Path) -> bool:
+        if not source_path.is_file():
+            self.stderr.write(self.style.WARNING(f'Skipping missing video: {source_path}'))
+            return False
+        ffmpeg = shutil.which('ffmpeg')
+        if not ffmpeg:
+            self.stderr.write(self.style.WARNING(
+                'ffmpeg not found on PATH - skipping video transcode. Install ffmpeg and re-run to include it.'
+            ))
+            return False
+        subprocess.run(
+            [
+                ffmpeg, '-y', '-i', str(source_path),
+                '-vf', f"scale='min({MAX_VIDEO_WIDTH},iw)':-2",
+                '-c:v', 'libx264', '-profile:v', 'main', '-preset', 'medium', '-crf', '26',
+                '-c:a', 'aac', '-b:a', '96k', '-movflags', '+faststart',
+                str(dest_path),
+            ],
+            check=True,
+            capture_output=True,
+        )
+        return True

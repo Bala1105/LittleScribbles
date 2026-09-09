@@ -41,4 +41,16 @@
         {% endif %}
     </div>
 </div>
+
+{% if product.video %}
+<div class="mt-10">
+    <h2 class="font-brand text-xl font-bold mb-3">Watch it in action</h2>
+    <video controls preload="none" playsinline
+           {% if product.primary_image %}poster="{{ product.primary_image.image.url }}"{% endif %}
+           class="w-full max-w-md rounded-2xl bg-black">
+        <source src="{{ product.video.url }}" type="video/mp4">
+        Your browser doesn't support embedded videos.
+    </video>
+</div>
+{% endif %}
 {% endblock %}
