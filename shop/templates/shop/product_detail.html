@@ -5,7 +5,7 @@
 {% block content %}
 <div class="grid md:grid-cols-2 gap-8">
     <div>
-        <div class="aspect-square bg-orange-100 rounded-2xl flex items-center justify-center overflow-hidden">
+        <div class="aspect-square bg-brand-tile rounded-2xl flex items-center justify-center overflow-hidden">
             {% if product.images.all %}
             <img id="main-image" src="{{ product.primary_image.image.url }}" alt="{{ product.name }}" class="w-full h-full object-cover">
             {% else %}
@@ -16,7 +16,7 @@
         <div class="flex gap-2 mt-3 overflow-x-auto">
             {% for image in product.images.all %}
             <button type="button" onclick="document.getElementById('main-image').src = this.querySelector('img').src"
-                    class="w-16 h-16 shrink-0 rounded-lg overflow-hidden border-2 border-transparent hover:border-pink-400 focus:border-pink-500">
+                    class="w-16 h-16 shrink-0 rounded-lg overflow-hidden border-2 border-transparent hover:border-brand-blue focus:border-brand-blue">
                 <img src="{{ image.image.url }}" alt="{{ product.name }}" class="w-full h-full object-cover">
             </button>
             {% endfor %}
@@ -25,7 +25,7 @@
     </div>
 
     <div>
-        <span class="text-xs text-pink-500 font-semibold uppercase">{{ product.category.name }}</span>
+        <span class="text-xs text-brand-blue font-semibold uppercase">{{ product.category.name }}</span>
         <h1 class="font-brand text-2xl sm:text-3xl font-bold mt-1 mb-3">{{ product.name }}</h1>
         <p class="text-2xl font-bold mb-4">₹{{ product.price }}</p>
         <p class="text-gray-600 mb-6">{{ product.description }}</p>
@@ -34,7 +34,7 @@
         <form method="post" class="flex items-center gap-4">
             {% csrf_token %}
             <div class="w-24">{{ form.quantity }}</div>
-            <button type="submit" class="bg-pink-500 text-white font-semibold px-6 py-2.5 rounded-full hover:bg-pink-600">Add to Cart</button>
+            <button type="submit" class="bg-brand-blue text-white font-semibold px-6 py-2.5 rounded-full">Add to Cart</button>
         </form>
         {% else %}
         <p class="text-red-500 font-semibold">Out of stock</p>

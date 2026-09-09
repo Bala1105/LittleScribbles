@@ -8,11 +8,11 @@
         <h2 class="font-brand font-bold mb-3">Categories</h2>
         <ul class="space-y-2 text-sm">
             <li>
-                <a href="{% url 'shop:product_list' %}" class="{% if not selected_category %}text-pink-500 font-semibold{% endif %}">All Products</a>
+                <a href="{% url 'shop:product_list' %}" class="{% if not selected_category %}text-brand-blue font-semibold{% endif %}">All Products</a>
             </li>
             {% for category in categories %}
             <li>
-                <a href="{{ category.get_absolute_url }}" class="{% if selected_category == category %}text-pink-500 font-semibold{% endif %}">{{ category.name }}</a>
+                <a href="{{ category.get_absolute_url }}" class="{% if selected_category == category %}text-brand-blue font-semibold{% endif %}">{{ category.name }}</a>
             </li>
             {% endfor %}
         </ul>

@@ -12,35 +12,56 @@
     <style>
         body { font-family: 'Nunito', sans-serif; }
         .font-brand { font-family: 'Quicksand', sans-serif; }
+        :root {
+            --ls-bg: #FFF8EC;
+            --ls-blue: #2F6FED;
+            --ls-blue-dark: #2558C2;
+            --ls-yellow: #F5A623;
+            --ls-green: #4CAF77;
+            --ls-text: #3A3A3A;
+            --ls-tile: #FBEAD0;
+        }
+        .bg-brand { background-color: var(--ls-bg); }
+        .bg-brand-tile { background-color: var(--ls-tile); }
+        .bg-brand-blue { background-color: var(--ls-blue); }
+        .bg-brand-blue:hover { background-color: var(--ls-blue-dark); }
+        .text-brand-blue { color: var(--ls-blue); }
+        .hover\:text-brand-blue:hover { color: var(--ls-blue); }
+        .border-brand-blue { border-color: var(--ls-blue); }
+        .ring-brand-blue:focus { box-shadow: 0 0 0 2px var(--ls-blue); }
+        .bg-brand-yellow { background-color: var(--ls-yellow); }
+        .text-brand-yellow { color: var(--ls-yellow); }
+        .bg-brand-green { background-color: var(--ls-green); }
+        .text-brand-green { color: var(--ls-green); }
     </style>
 </head>
-<body class="min-h-screen flex flex-col bg-orange-50 text-gray-800">
+<body class="min-h-screen flex flex-col bg-brand" style="color: var(--ls-text);">
 
 <header class="bg-white shadow-sm sticky top-0 z-40">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
             <a href="{% url 'shop:home' %}" class="flex items-center gap-2">
                 <img src="{% static 'images/logo.png' %}" alt="LittleScribbles" class="h-12 w-12 rounded-full object-cover">
-                <span class="font-brand text-xl font-bold text-pink-500 hidden sm:inline">LittleScribbles</span>
+                <span class="font-brand text-xl font-bold text-brand-blue hidden sm:inline">LittleScribbles</span>
             </a>
 
             <nav class="hidden md:flex items-center gap-6 text-sm font-semibold">
-                <a href="{% url 'shop:home' %}" class="hover:text-pink-500">Home</a>
-                <a href="{% url 'shop:product_list' %}" class="hover:text-pink-500">Shop</a>
+                <a href="{% url 'shop:home' %}" class="hover:text-brand-blue">Home</a>
+                <a href="{% url 'shop:product_list' %}" class="hover:text-brand-blue">Shop</a>
             </nav>
 
             <form action="{% url 'shop:product_list' %}" method="get" class="hidden md:flex flex-1 max-w-xs mx-6">
                 <input type="text" name="q" placeholder="Search products..." value="{{ query|default:'' }}"
-                       class="w-full rounded-full border border-gray-200 px-4 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-pink-300">
+                       class="w-full rounded-full border border-gray-200 px-4 py-1.5 text-sm focus:outline-none ring-brand-blue">
             </form>
 
             <div class="flex items-center gap-4">
-                <a href="{% url 'shop:cart_detail' %}" class="relative flex items-center text-gray-700 hover:text-pink-500">
+                <a href="{% url 'shop:cart_detail' %}" class="relative flex items-center text-gray-700 hover:text-brand-blue">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.29 2.29A1 1 0 005 17h12M9 21a1 1 0 100-2 1 1 0 000 2zm8 0a1 1 0 100-2 1 1 0 000 2z" />
                     </svg>
                     {% if cart|length > 0 %}
-                    <span class="absolute -top-2 -right-2 bg-pink-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">{{ cart|length }}</span>
+                    <span class="absolute -top-2 -right-2 bg-brand-yellow text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">{{ cart|length }}</span>
                     {% endif %}
                 </a>
 
@@ -48,11 +69,11 @@
                 <span class="hidden sm:inline text-sm font-semibold">Hi, {{ user.username }}</span>
                 <form action="{% url 'shop:logout' %}" method="post" class="hidden md:block">
                     {% csrf_token %}
-                    <button type="submit" class="text-sm font-semibold hover:text-pink-500">Logout</button>
+                    <button type="submit" class="text-sm font-semibold hover:text-brand-blue">Logout</button>
                 </form>
                 {% else %}
-                <a href="{% url 'shop:login' %}" class="hidden md:inline text-sm font-semibold hover:text-pink-500">Login</a>
-                <a href="{% url 'shop:signup' %}" class="hidden md:inline bg-pink-500 text-white text-sm font-semibold px-4 py-1.5 rounded-full hover:bg-pink-600">Sign Up</a>
+                <a href="{% url 'shop:login' %}" class="hidden md:inline text-sm font-semibold hover:text-brand-blue">Login</a>
+                <a href="{% url 'shop:signup' %}" class="hidden md:inline bg-brand-blue text-white text-sm font-semibold px-4 py-1.5 rounded-full">Sign Up</a>
                 {% endif %}
 
                 <button id="menu-btn" class="md:hidden p-2 text-gray-700" aria-label="Open menu">
@@ -66,7 +87,7 @@
         <div id="mobile-menu" class="hidden md:hidden pb-4 space-y-3">
             <form action="{% url 'shop:product_list' %}" method="get">
                 <input type="text" name="q" placeholder="Search products..." value="{{ query|default:'' }}"
-                       class="w-full rounded-full border border-gray-200 px-4 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-pink-300">
+                       class="w-full rounded-full border border-gray-200 px-4 py-1.5 text-sm focus:outline-none ring-brand-blue">
             </form>
             <a href="{% url 'shop:home' %}" class="block text-sm font-semibold py-1">Home</a>
             <a href="{% url 'shop:product_list' %}" class="block text-sm font-semibold py-1">Shop</a>

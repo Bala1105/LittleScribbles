@@ -15,66 +15,74 @@ from shop.models import Category, Product, ProductImage
 PRODUCT_SOURCES = {
     'Littlescribbles brain booster': {
         'name': 'Brain Booster Activity Book',
-        'category': 'Ages 4-8',
+        'category': 'Activity Books',
         'price': 299,
         'is_featured': True,
     },
     'Littlescribbles brain gym': {
         'name': 'Brain Gym Activity Book',
-        'category': 'Ages 4-8',
+        'category': 'Activity Books',
         'price': 299,
         'is_featured': False,
     },
     'Littlescribbles keep me busy': {
         'name': 'Keep Me Busy Activity Book',
-        'category': 'Ages 4-8',
+        'category': 'Activity Books',
         'price': 299,
         'is_featured': False,
         'video': 'VID_20260707_214930_347_bsl.mp4',
     },
     'Littlescribbles tracing book': {
         'name': 'Tracing Book',
-        'category': 'Ages 3-6',
+        'category': 'Tracing Books',
         'price': 249,
         'is_featured': False,
     },
     'Pillow cushion book': {
         'name': 'Pillow Cushion Book',
-        'category': 'Ages 2-4',
+        'category': 'Pillow & Soft Books',
         'price': 799,
         'is_featured': True,
     },
     'Wooden tracing alphabet': {
         'name': 'Wooden Tracing Board - Alphabet',
-        'category': 'Ages 3-6',
+        'category': 'Wooden Tracing Boards',
         'price': 499,
         'is_featured': True,
     },
     'Wooden tracing cursive': {
         'name': 'Wooden Tracing Board - Cursive',
-        'category': 'Ages 3-6',
+        'category': 'Wooden Tracing Boards',
         'price': 499,
         'is_featured': False,
     },
     'Wooden tracing hindi': {
         'name': 'Wooden Tracing Board - Hindi',
-        'category': 'Ages 3-6',
+        'category': 'Wooden Tracing Boards',
         'price': 499,
         'is_featured': False,
     },
     'Wooden tracing lines and curves': {
         'name': 'Wooden Tracing Board - Lines & Curves',
-        'category': 'Ages 3-6',
+        'category': 'Wooden Tracing Boards',
         'price': 499,
         'is_featured': False,
     },
     'Wooden tracing tamil': {
         'name': 'Wooden Tracing Board - Tamil',
-        'category': 'Ages 3-6',
+        'category': 'Wooden Tracing Boards',
         'price': 499,
         'is_featured': False,
     },
 }
+
+# Order categories should appear in on the shop page, by book type.
+CATEGORY_ORDER = [
+    'Activity Books',
+    'Tracing Books',
+    'Wooden Tracing Boards',
+    'Pillow & Soft Books',
+]
 
 IMAGE_EXTENSIONS = {'.jpg', '.jpeg', '.png'}
 MAX_DIMENSION = 1200
@@ -99,6 +107,8 @@ class Command(BaseCommand):
             category, _ = Category.objects.get_or_create(
                 name=info['category'], defaults={'slug': slugify(info['category'])}
             )
+            category.order = CATEGORY_ORDER.index(info['category'])
+            category.save()
 
             slug = slugify(info['name'])
             product, created = Product.objects.get_or_create(
@@ -111,7 +121,7 @@ class Command(BaseCommand):
                     'is_featured': info['is_featured'],
                     'description': (
                         f"{info['name']} from LittleScribbles - a fun, hands-on activity "
-                        f"designed for curious minds ({info['category']})."
+                        f"for little hands aged 2-8."
                     ),
                 },
             )
