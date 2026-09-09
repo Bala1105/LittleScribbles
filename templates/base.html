@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}LittleScribbles{% endblock %}</title>
+    <link rel="icon" href="{% static 'images/logo.png' %}">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Nunito:wght@400;600&display=swap" rel="stylesheet">
@@ -18,7 +19,10 @@
 <header class="bg-white shadow-sm sticky top-0 z-40">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
-            <a href="{% url 'shop:home' %}" class="font-brand text-2xl font-bold text-pink-500">LittleScribbles</a>
+            <a href="{% url 'shop:home' %}" class="flex items-center gap-2">
+                <img src="{% static 'images/logo.png' %}" alt="LittleScribbles" class="h-12 w-12 rounded-full object-cover">
+                <span class="font-brand text-xl font-bold text-pink-500 hidden sm:inline">LittleScribbles</span>
+            </a>
 
             <nav class="hidden md:flex items-center gap-6 text-sm font-semibold">
                 <a href="{% url 'shop:home' %}" class="hover:text-pink-500">Home</a>
