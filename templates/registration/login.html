@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Login | LittleScribbles{% endblock %}
+
+{% block content %}
+<div class="max-w-sm mx-auto bg-white rounded-2xl shadow-sm p-8">
+    <h1 class="font-brand text-2xl font-bold mb-6 text-center">Welcome Back</h1>
+    <form method="post" class="space-y-4">
+        {% csrf_token %}
+        {% for field in form %}
+        <div>
+            <label class="block text-sm font-semibold mb-1">{{ field.label }}</label>
+            {{ field }}
+            {% for error in field.errors %}
+            <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+            {% endfor %}
+        </div>
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+        <p class="text-red-500 text-xs">{{ error }}</p>
+        {% endfor %}
+        <button type="submit" class="w-full bg-pink-500 text-white font-semibold py-2.5 rounded-full hover:bg-pink-600">Login</button>
+    </form>
+    <p class="text-sm text-gray-500 text-center mt-4">
+        Don't have an account? <a href="{% url 'shop:signup' %}" class="text-pink-500 font-semibold hover:underline">Sign up</a>
+    </p>
+</div>
+{% endblock %}

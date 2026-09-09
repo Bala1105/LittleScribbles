@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Your Cart | LittleScribbles{% endblock %}
+
+{% block content %}
+<h1 class="font-brand text-2xl font-bold mb-6">Your Cart</h1>
+
+{% if cart|length > 0 %}
+<div class="space-y-4">
+    {% for item in cart %}
+    <div class="bg-white rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center gap-4 shadow-sm">
+        <div class="w-20 h-20 shrink-0 bg-orange-100 rounded-xl flex items-center justify-center overflow-hidden">
+            {% if item.product.image %}
+            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="w-full h-full object-cover">
+            {% else %}
+            <span class="text-3xl">🧸</span>
+            {% endif %}
+        </div>
+
+        <div class="flex-1">
+            <a href="{{ item.product.get_absolute_url }}" class="font-semibold hover:text-pink-500">{{ item.product.name }}</a>
+            <p class="text-sm text-gray-500">₹{{ item.product.price }} each</p>
+        </div>
+
+        <form method="post" action="{% url 'shop:cart_update' item.product.id %}" class="flex items-center gap-2">
+            {% csrf_token %}
+            <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="w-16 rounded-lg border border-gray-200 px-2 py-1 text-sm">
+            <button type="submit" class="text-sm font-semibold text-pink-500 hover:underline">Update</button>
+        </form>
+
+        <p class="font-bold w-24 text-right">₹{{ item.total_price }}</p>
+
+        <a href="{% url 'shop:cart_remove' item.product.id %}" class="text-sm text-gray-400 hover:text-red-500">Remove</a>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="mt-6 bg-white rounded-2xl p-4 flex justify-between items-center shadow-sm">
+    <span class="font-brand text-lg font-bold">Total</span>
+    <span class="font-brand text-lg font-bold">₹{{ cart.get_total_price }}</span>
+</div>
+{% else %}
+<p class="text-gray-500">Your cart is empty. <a href="{% url 'shop:product_list' %}" class="text-pink-500 font-semibold hover:underline">Start shopping</a>.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Shop | LittleScribbles{% endblock %}
+
+{% block content %}
+<div class="flex flex-col md:flex-row gap-8">
+    <aside class="md:w-56 shrink-0">
+        <h2 class="font-brand font-bold mb-3">Categories</h2>
+        <ul class="space-y-2 text-sm">
+            <li>
+                <a href="{% url 'shop:product_list' %}" class="{% if not selected_category %}text-pink-500 font-semibold{% endif %}">All Products</a>
+            </li>
+            {% for category in categories %}
+            <li>
+                <a href="{{ category.get_absolute_url }}" class="{% if selected_category == category %}text-pink-500 font-semibold{% endif %}">{{ category.name }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </aside>
+
+    <div class="flex-1">
+        <h1 class="font-brand text-2xl font-bold mb-4">
+            {% if selected_category %}{{ selected_category.name }}{% else %}All Products{% endif %}
+        </h1>
+
+        {% if products %}
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+            {% for product in products %}
+            {% include "shop/_product_card.html" %}
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-gray-500">No products found.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

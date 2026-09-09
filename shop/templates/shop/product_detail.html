@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }} | LittleScribbles{% endblock %}
+
+{% block content %}
+<div class="grid md:grid-cols-2 gap-8">
+    <div class="aspect-square bg-orange-100 rounded-2xl flex items-center justify-center overflow-hidden">
+        {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-full object-cover">
+        {% else %}
+        <span class="text-6xl">🧸</span>
+        {% endif %}
+    </div>
+
+    <div>
+        <span class="text-xs text-pink-500 font-semibold uppercase">{{ product.category.name }}</span>
+        <h1 class="font-brand text-2xl sm:text-3xl font-bold mt-1 mb-3">{{ product.name }}</h1>
+        <p class="text-2xl font-bold mb-4">₹{{ product.price }}</p>
+        <p class="text-gray-600 mb-6">{{ product.description }}</p>
+
+        {% if product.in_stock %}
+        <form method="post" class="flex items-center gap-4">
+            {% csrf_token %}
+            <div class="w-24">{{ form.quantity }}</div>
+            <button type="submit" class="bg-pink-500 text-white font-semibold px-6 py-2.5 rounded-full hover:bg-pink-600">Add to Cart</button>
+        </form>
+        {% else %}
+        <p class="text-red-500 font-semibold">Out of stock</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
