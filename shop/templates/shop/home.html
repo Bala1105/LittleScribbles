@@ -1,10 +1,17 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
-<section class="bg-blue-50 rounded-3xl px-6 sm:px-12 py-12 sm:py-20 text-center mb-12">
-    <h1 class="font-brand text-3xl sm:text-5xl font-bold text-brand-blue mb-4">Worksheets &amp; Activities for Curious Minds</h1>
-    <p class="text-gray-600 max-w-xl mx-auto mb-6">Fun, hands-on activity books and tracing sets designed for kids aged 2 to 8.</p>
-    <a href="{% url 'shop:product_list' %}" class="inline-block bg-brand-blue text-white font-semibold px-6 py-3 rounded-full">Shop Now</a>
+<section class="bg-blue-50 rounded-3xl px-6 sm:px-12 py-10 sm:py-16 mb-12 grid md:grid-cols-2 items-center gap-8 overflow-hidden">
+    <div class="text-center md:text-left">
+        <h1 class="font-brand text-3xl sm:text-5xl font-bold text-brand-blue mb-4">Worksheets &amp; Activities for Curious Minds</h1>
+        <p class="text-gray-600 max-w-xl mx-auto md:mx-0 mb-6">Fun, hands-on activity books and tracing sets designed for kids aged 2 to 8.</p>
+        <a href="{% url 'shop:product_list' %}" class="inline-block bg-brand-blue text-white font-semibold px-6 py-3 rounded-full">Shop Now</a>
+    </div>
+    <div class="hero-float">
+        <img src="{% static 'images/kite_and_notebook_scene.png' %}" alt="A child flying kites while drawing in a notebook"
+             class="w-full max-w-sm mx-auto rounded-2xl shadow-lg">
+    </div>
 </section>
 
 {% if categories %}
